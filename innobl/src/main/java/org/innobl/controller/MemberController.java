@@ -50,7 +50,7 @@ public class MemberController {
 	//전체 조회
 	@GetMapping("/current_member")
 	public String getCurrentMembers(
-			@RequestParam(value = "skillLevel",defaultValue="100", required = false) String skillLevel,
+	    @RequestParam(value = "skillLevel",defaultValue="100", required = false) String skillLevel,
             @RequestParam(value = "gender", defaultValue="100",required = false) String gender,
             @RequestParam(value = "name", defaultValue="",required = false) String name,
             @RequestParam(value = "pageNum", defaultValue="1",required = false) int pageNum,
@@ -75,7 +75,7 @@ public class MemberController {
 	
 	@PostMapping("/current_member")
 	public String postCurrentMembers( 
-								  @RequestParam(value = "skillLevel", required = false) String skillLevel,
+				      @RequestParam(value = "skillLevel", required = false) String skillLevel,
 	                              @RequestParam(value = "gender", required = false) String gender,
 	                              @RequestParam(value = "name", required = false) String name,
 	                              @RequestParam(value = "pageNum", required = false) int pageNum,
