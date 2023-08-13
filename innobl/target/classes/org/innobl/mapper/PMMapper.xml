@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mapper DTD 선언 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.innobl.mapper.PMMapper">
+ 
+	<select id="getPMListByTypes" resultType="org.innobl.domain.PMDTO">
+	  <![CDATA[
+	  SELECT 
+	  	M.NAME AS name,
+	    NVL(PR.PRJMNG_ST, '-') AS PRJMNG_ST,
+	    NVL(PR.PRJMNG_END, '-') AS PRJMNG_END,
+	    NVL(cd1.dtlcodenm, '-') AS PRJMNG_ROLE,
+	    NVL(PJ.PRJNAME,'-') AS PRJNAME 
+	  FROM 
+	  	MEMBER M
+	    LEFT JOIN
+		    PRJMNG PR ON PR.MNO = M.MNO
+		LEFT JOIN
+		    PROJECT PJ ON PR.PRJNO = PJ.PRJNO
+		LEFT OUTER JOIN
+			DCODEDTL cd1 on (cd1.dcode='PM001' and PR.PRJMNG_ROLE = cd1.dtlcode) 
+	  WHERE M.NAME LIKE '%' || #{name} || '%'
+	    AND PR.PRJMNG_ST >= #{from}
+	    AND PR.PRJMNG_ST <= #{to}
+	    AND PR.PRJMNG_ROLE = #{PRJMNG_ROLE}
+	  ]]>
+	</select>
+	
+	  <select id="getPMList" resultType="org.innobl.domain.PMDTO">
+	   SELECT
+		    M.NAME AS NAME,
+		    NVL(PR.PRJMNG_ST, '-') AS PRJMNG_ST,
+		    NVL(PR.PRJMNG_END, '-') AS PRJMNG_END,
+		    NVL(cd1.dtlcodenm, '-') AS PRJMNG_ROLE,
+		    NVL(PJ.PRJNAME,'-') AS PRJNAME
+		FROM
+		    MEMBER M
+		LEFT JOIN
+		    PRJMNG PR ON PR.MNO = M.MNO
+		LEFT JOIN
+		    PROJECT PJ ON PR.PRJNO = PJ.PRJNO
+		LEFT OUTER JOIN
+			DCODEDTL cd1 on (cd1.dcode='PM001' and PR.PRJMNG_ROLE = cd1.dtlcode) 
+		  
+	  </select>
+	  
+	  
+	   <insert id="enrollPMMembers" parameterType="org.innobl.domain.VO.PMVO">
+        INSERT INTO PRJMNG (
+           	prjno, 
+            mno, 
+            prjmng_st,
+	        PRJMNG_END,
+            PRJMNG_ROLE
+        )
+        VALUES (
+            #{prjno},
+            #{mno}, 
+            #{prjmng_st}, 
+            #{prjmng_end},
+            #{prjmng_role}
+        )
+    	</insert>
+    	
+    <select id="getPMListByPrjno" resultType="org.innobl.domain.PMDTO">
+	   SELECT
+		    M.NAME AS NAME,
+		    NVL(PR.PRJMNG_ST, '-') AS PRJMNG_ST,
+		    NVL(PR.PRJMNG_END, '-') AS PRJMNG_END,
+		    NVL(cd1.dtlcodenm, '-') AS PRJMNG_ROLE,
+		    NVL(PJ.PRJNAME,'-') AS PRJNAME
+		FROM
+		    MEMBER M
+		LEFT JOIN
+		    PRJMNG PR ON PR.MNO = M.MNO
+		LEFT JOIN
+		    PROJECT PJ ON PR.PRJNO = PJ.PRJNO
+		LEFT OUTER JOIN
+			DCODEDTL cd1 on (cd1.dcode='PM001' and PR.PRJMNG_ROLE = cd1.dtlcode) 
+		WHERE
+			PJ.PRJNO = #{PRJNO}
+	  </select>
+  </mapper>
+ 

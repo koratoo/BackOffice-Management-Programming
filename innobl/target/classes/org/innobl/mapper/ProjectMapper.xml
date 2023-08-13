@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- mapper DTD 선언 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.innobl.mapper.ProjectMapper">
+  
+ <select id="getPrjList" resultType="org.innobl.domain.VO.ProjectVO">
+  	<![CDATA[
+  		select 
+  			prjno,
+  			prjname,
+  			prjst,
+  			prjend,
+  			prjstatus,
+  			vname
+  		from
+  			(
+  			select /*+INDEX_DESC(project prjno) */
+  			 rownum rn,
+  			 prjno,
+  			 prjname,
+  			 prjst,
+  			 prjend,
+  			 pcd1.dtlcodenm as prjstatus,
+  			 pcd2.dtlcodenm as vname
+  			from
+  			 project pj
+  			  left outer join dcodedtl pcd1 on (pcd1.dcode='P001' and pj.prjstatus= pcd1.dtlcode)
+  			  left outer join dcodedtl pcd2 on (pcd2.dcode='V001' and pj.vname= pcd2.dtlcode)
+  			where 
+  			delete_col = 1 AND
+  			rownum<=#{pageNum} * #{amount}
+  			ORDER BY prjno DESC
+  			)
+  			where rn>(#{pageNum} -1) * #{amount}
+  	]]>
+  
+  </select>
+  
+  <select id="searchWithTypes" resultType="org.innobl.domain.VO.ProjectVO">
+	    <![CDATA[
+	    SELECT 
+	      prjno, 
+	      prjname,
+	      prjst,
+	      prjend, 
+	      prjstatus,
+	      vname
+	    FROM (
+	      SELECT /*+INDEX_DESC(project prjno) */
+	        rownum rn, 
+	        prjno, 
+	        prjname, 
+	        prjst, 
+	        prjend, 
+	        pcd1.dtlcodenm as prjstatus,
+	        pcd2.dtlcodenm as vname
+	      FROM 
+	       project pj
+  			  left outer join dcodedtl pcd1 on (pcd1.dcode='P001' and pj.prjstatus= pcd1.dtlcode)
+  			  left outer join dcodedtl pcd2 on (pcd2.dcode='V001' and pj.vname= pcd2.dtlcode)
+	      WHERE
+	      	delete_col = 1 AND
+	        prjstatus LIKE '%' || #{PRJSTATUS}  || '%' AND
+	        prjname LIKE '%' || #{PRJNAME} || '%'
+	      ORDER BY prjno DESC
+	    )
+	    WHERE rn > (#{pageNum} - 1) * #{amount}
+	    AND rownum <= #{pageNum} * #{amount}
+	    AND prjst >= #{from}
+        AND prjst <= #{to}
+	    ]]>
+	</select>
+	
+	
+  	 <select id="getPrjDetail" resultType="org.innobl.domain.VO.ProjectVO">
+     	select
+     		prjno, 
+            prjname, 
+            pcd1.dtlcodenm as prjstatus, 
+            prjst,
+  			prjend,
+            prjdesc
+        from 
+        	project prj
+        	 left outer join 
+        	 dcodedtl pcd1 on (pcd1.dcode='P001' and prj.prjstatus = pcd1.dtlcode)
+        	where prjno = #{prjno}
+    </select>
+    <select id="getPrjMNames"  resultType="java.lang.String">
+    	SELECT 
+		    NAME 
+		FROM MEMBER 
+		WHERE MNO IN(
+		SELECT 
+		    MNO
+		    FROM PRJMNG PR
+		    WHERE PRJNO = #{prjno}
+		    )
+    </select>
+    
+    <insert id="enrollProject" parameterType="org.innobl.domain.VO.ProjectVO">
+        INSERT INTO project (
+           	prjno, 
+            prjname, 
+            prjst,
+	        prjend,
+            prjdesc,
+            prjstatus,
+        	vname,
+        	delete_col
+        )
+        VALUES (
+            project_seq.nextval, 
+            #{PRJNAME}, 
+            #{PRJST}, 
+            #{PRJEND},
+            #{PRJDESC},
+            #{PRJSTATUS},
+            #{VNAME},
+            '1'
+        )
+    </insert>
+	<select id="getTotalCount" resultType="int">
+	  <![CDATA[
+	    SELECT COUNT(*)
+	    FROM project pj
+	      LEFT OUTER JOIN dcodedtl pcd1 ON (pcd1.dcode = 'P001' AND pj.prjstatus = pcd1.dtlcode)
+	      LEFT OUTER JOIN dcodedtl pcd2 ON (pcd2.dcode = 'V001' AND pj.vname = pcd2.dtlcode)
+	    WHERE
+	      delete_col = 1 AND
+	      prjstatus LIKE '%' || #{PRJSTATUS}  || '%' AND
+	      prjname LIKE '%' || #{PRJNAME} || '%' AND
+	      prjst >= #{from} AND
+	      prjst <= #{to}
+	  ]]>
+	</select>
+    
+  </mapper>

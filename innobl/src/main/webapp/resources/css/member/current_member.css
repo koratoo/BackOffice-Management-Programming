@@ -1,0 +1,90 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'SEBANG_Gothic_Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SEBANG_Gothic_Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+	
+.main {
+    font-family: 'SEBANG_Gothic_Bold';
+    flex-grow: 1;
+    padding: 20px; 
+    background-color: white;
+}
+table{
+    border-collapse: collapse;
+    width:100%;
+}
+	
+tr,td,th{
+    padding: 10px;
+    border: 2px solid black;
+    text-align: center;
+}
+th{
+    background-color: rgb(40, 90, 140);
+    color: white;
+}
+.search{
+    float: right;
+    margin:10px;
+}
+#search_member{
+    height: 30px;
+    width: 250px;
+}
+select{
+    height: 30px;
+    width: 80px;
+    text-align:center;
+    background-color: #f1f1f1;
+    border: 1px solid rgb(40, 90, 140);
+}
+	
+td>a{
+    font-weight:bold;
+    text-decoration:underline;
+    text-underline-position:under;
+    color: rgb(40, 90, 140);
+}
+tr:hover{
+    background-color: rgba(70,130,180, 0.1);
+    cursor:pointer;
+}
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.pagination li {
+    list-style-type: none;
+}
+
+.pagination li a {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: 1px solid rgb(40, 90, 140);
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination li.active a {
+    background-color: rgb(40, 90, 140);
+    color: #fff;
+}
+
+.pagination li.previous,
+.pagination li.next {
+    margin: 0 5px;
+}
+
+.pagination li.previous a,
+.pagination li.next a {
+    padding: 5px 10px;
+    border: 1px solid rgb(40, 90, 140);
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+}

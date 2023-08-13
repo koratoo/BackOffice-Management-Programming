@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mapper DTD 선언 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.innobl.mapper.QNABoardMapper">
+  
+<!-- 
+    <select id="getQNABoard" resultType="org.innobl.domain.VO.QNABoardVO">
+	<![CDATA[
+        SELECT 
+        	* FROM (
+          SELECT 
+	          ROWNUM rn, 
+	          qnabno, 
+	          prnt_qnabno, 
+	          qnalvl, 
+	          title, 
+	          content, 
+	          writedate, 
+	          mno, 
+	          qna_cd, 
+	          name
+          FROM (
+            SELECT
+              qb.qnabno AS qnabno,
+              qb.prnt_qnabno AS prnt_qnabno,
+              qb.qnalvl AS qnalvl,
+              qb.title AS title,
+              qb.content AS content,
+              qb.writedate AS writedate,
+              qb.mno AS mno,
+              cd.dtlcodenm AS qna_cd,
+              m.name AS name
+            FROM 
+            	QNA_BOARD qb
+            JOIN member m 
+            	ON qb.mno = m.mno
+            LEFT OUTER JOIN dcodedtl cd 
+            	ON (cd.dcode='QNA001' and qb.qna_cd = cd.dtlcode)
+            START WITH 
+            	prnt_qnabno is null
+            CONNECT BY PRIOR 
+            	qb.qnabno = qb.prnt_qnabno
+            ORDER SIBLINGS BY
+               CASE
+			      WHEN qb.qnalvl = 0 THEN 1
+			      ELSE 2
+			  END,
+			  qb.writedate DESC
+          ) WHERE ROWNUM <= #{pageNum} * #{amount}
+        ) WHERE rn > (#{pageNum} - 1) * #{amount}
+        ]]>
+    </select> -->
+  </mapper>
+ 

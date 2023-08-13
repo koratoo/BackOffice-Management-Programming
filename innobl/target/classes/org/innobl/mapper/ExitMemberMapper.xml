@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mapper DTD 선언 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.innobl.mapper.ExitMemberMapper">
+  
+ <select id="getExitMember" resultType="org.innobl.domain.VO.MemberVO">
+  	<![CDATA[
+  		select 
+  			mno,
+  			name,
+  			juminNo,
+  			gender,
+  			skillLevel,
+  			emplYear
+  		from
+  			(
+  			select /*+INDEX_DESC(member mno) */
+  			 rownum rn, 
+  			 mno, 
+  			 name, 
+  			 juminNo,
+  			 gender,
+  			 skillLevel,
+  			 emplYear
+  			from
+  			 member
+  			where 
+  			]]>
+  		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+  			<foreach item='type' collection="typeArr">
+  				<trim prefix="OR">
+  					<choose>
+  						<when test="type == 'S'.toString()">
+  							skillLevel like '%' || #{keyword}||'%'
+  						</when>
+  						<when test="type == 'G'.toString()">
+  							gender like '%' || #{keyword}||'%'
+  						</when>
+  						<when test="type == 'N'.toString()">
+  							Name like '%' || #{keyword}||'%'
+  						</when>
+  					</choose>
+  				</trim>
+  			</foreach>
+  		</trim>
+  	<![CDATA[	
+  			rownum<=#{pageNum} * #{amount}
+  			ORDER BY mno DESC
+  			)
+  			where rn>(#{pageNum} -1) * #{amount}
+  			and exitDate is not null
+  	]]>
+  
+  </select>
+ </mapper>

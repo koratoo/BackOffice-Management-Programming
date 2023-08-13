@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mapper DTD 선언 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.innobl.mapper.MemberMapper">
+  
+ <select id="getListWithPaging" resultType="org.innobl.domain.VO.MemberVO">
+  	<![CDATA[
+  		select 
+  			mno,
+  			name,
+  			juminNo,
+  			gender,
+  			skillLevel,
+			emplYear,
+			joinDate,
+			exitDate
+  		from
+  			(
+  			select /*+INDEX_DESC(member mno) */
+  			 rownum rn, 
+  			 mno, 
+  			 name, 
+  			 juminNo,
+  			 cd6.dtlcodenm as gender,
+  			 cd5.dtlcodenm as skilllevel,
+  			 emplYear,
+  			 joinDate,
+  			 exitDate
+  			from
+  			 member mb
+  			 left outer join dcodedtl cd5 on (cd5.dcode='M005' and mb.skilllevel = cd5.dtlcode)
+  			 left outer join dcodedtl cd6 on (cd6.dcode='M006' and mb.gender = cd6.dtlcode)
+  			where 
+  				
+  			rownum<=#{pageNum} * #{amount}
+  			and delete_col = 1
+  			ORDER BY mno DESC  			
+  			)
+  			where rn>(#{pageNum} -1) * #{amount}
+  			
+  	]]>
+  
+  </select>
+  
+	<select id="searchWithTypes" resultType="org.innobl.domain.VO.MemberVO">
+	    <![CDATA[
+	    SELECT 
+	      mno, 
+	      name, 
+	      juminNo, 
+	      gender, 
+	      skillLevel, 
+	      emplYear,
+	      joinDate,  
+     	  exitDate 
+	    FROM (
+	      SELECT /*+INDEX_DESC(member mno) */
+	        rownum rn, 
+	        mno, 
+	        name, 
+	        juminNo, 
+	        cd6.dtlcodenm as gender,
+  			cd5.dtlcodenm as skilllevel, 
+	        emplYear,
+	        joinDate,
+	        exitDate
+	      FROM 
+	       member mb
+  			 left outer join dcodedtl cd5 on (cd5.dcode='M005' and mb.skilllevel = cd5.dtlcode)
+  			 left outer join dcodedtl cd6 on (cd6.dcode='M006' and mb.gender = cd6.dtlcode)
+	      WHERE
+	      	delete_col = 1 
+	      	AND
+	        skillLevel Like '%' || #{skillLevel} || '%'
+	        AND
+	        gender  Like '%' || #{gender} || '%'
+	        AND
+	        name LIKE '%' || #{name} || '%'
+	      ORDER BY mno DESC
+	    )
+	    WHERE rn > (#{pageNum} - 1) * #{amount}
+	    AND rownum <= #{pageNum} * #{amount}
+	    AND joinDate >= #{from}
+        AND joinDate <= #{to} 
+	    ]]>
+	</select>
+	
+	<select id="countSearchWithTypes" resultType="java.lang.Integer">
+	    <![CDATA[
+	    SELECT 
+	      count(*) as total
+	    FROM 
+	      member mb
+	      left outer join dcodedtl cd5 on (cd5.dcode='M005' and mb.skilllevel = cd5.dtlcode)
+	      left outer join dcodedtl cd6 on (cd6.dcode='M006' and mb.gender = cd6.dtlcode)
+	    WHERE
+	      delete_col = 1 
+	      AND skillLevel Like '%' || #{skillLevel} || '%'
+	      AND gender  Like '%' || #{gender} || '%'
+	      AND name LIKE '%' || #{name} || '%'
+	      AND joinDate >= #{from}
+	      AND joinDate <= #{to} 
+	    ]]>
+	</select>
+
+
+  
+  <update id="modifyMember">
+    UPDATE member
+    SET
+        name = #{name},
+        juminNo = #{juminNo},
+        gender = #{gender},
+        engName = #{engName},
+        chnName = #{chnName},
+        birthday = #{birthday},
+        marriage = #{marriage},
+        emplYear = #{emplYear},
+        payType = #{payType},
+        emplType = #{emplType},
+        wishPos = #{wishPos},
+        addr = #{addr},
+        phone = #{phone},
+        email = #{email},
+        skillLevel = #{skillLevel},
+        alchol = #{alchol},
+        joinDate = #{joinDate},
+        exitDate = #{exitDate},
+        addrdtl = #{addrdtl}
+    WHERE mno = #{mno}
+</update>
+
+
+	<insert id="enrollMember" parameterType="org.innobl.domain.VO.MemberVO">
+        INSERT INTO member (
+            mno, 
+            name, 
+            juminNo, 
+            gender, 
+            profileImg, 
+            engName, 
+            chnName,
+            birthday, 
+            marriage, 
+            emplYear, 
+            payType, 
+            emplType, 
+            wishPos,
+            addr, 
+            phone, 
+            email, 
+            skillLevel, 
+            joinDate,
+            exitDate, 
+            alchol,
+            delete_col,
+            addrdtl
+        )
+        VALUES (
+            member_seq.nextVal, 
+            #{name}, 
+            #{juminNo}, 
+            #{gender}, 
+            #{profileImg},
+            #{engName}, 
+            #{chnName}, 
+            #{birthday}, 
+            #{marriage},
+            #{emplYear}, 
+            #{payType}, 
+            #{emplType}, 
+            #{wishPos}, 
+            #{addr}, 
+            #{phone},
+            #{email}, 
+            #{skillLevel}, 
+            #{joinDate}, 
+            #{exitDate},  
+            #{alchol},
+            '1',
+            #{addrdtl}
+        )
+    </insert>
+    
+    <select id="getMemberByMno" resultType="org.innobl.domain.VO.MemberVO">
+     	select
+     		mno, 
+            name, 
+            juminNo, 
+	        cd6.dtlcodenm as gender,
+            profileImg, 
+            engName, 
+            chnName,
+            birthday, 
+            cd1.dtlcodenm as marriage, 
+            emplYear, 
+            cd2.dtlcodenm as payType, 
+            cd3.dtlcodenm as emplType, 
+            cd4.dtlcodenm as wishPos,
+            addr, 
+            addrdtl,
+            phone, 
+            email, 
+  			cd5.dtlcodenm as skilllevel, 
+            joinDate,
+            exitDate, 
+            alchol
+        from 
+        	member mb
+        	 left outer join dcodedtl cd1 on (cd1.dcode='M001' and mb.marriage = cd1.dtlcode)
+        	 left outer join dcodedtl cd2 on (cd2.dcode='M002' and mb.payType = cd2.dtlcode)
+        	 left outer join dcodedtl cd3 on (cd3.dcode='M003' and mb.emplType = cd3.dtlcode)
+        	 left outer join dcodedtl cd4 on (cd4.dcode='M004' and mb.wishPos = cd4.dtlcode)
+  			 left outer join dcodedtl cd5 on (cd5.dcode='M005' and mb.skilllevel = cd5.dtlcode)
+  			 left outer join dcodedtl cd6 on (cd6.dcode='M006' and mb.gender = cd6.dtlcode)
+  			where mno = #{mno}
+    </select>
+    
+    <select id="getTotalCount" resultType="int">
+    	select 
+    		count(*) 
+    	from 
+    		Member 
+    	where 
+    		delete_col = 1
+    </select>
+    
+    
+    
+    
+  </mapper>

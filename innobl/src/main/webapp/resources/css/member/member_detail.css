@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+@font-face {
+	    font-family: 'MBC1961GulimM';
+	    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/MBC1961GulimM.woff2') format('woff2');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	.main {
+	  font-family: 'MBC1961GulimM';
+	  flex-grow: 1;
+	  padding: 20px; 
+	  background-color: white;
+	}
+	table{
+		border-collapse: collapse;
+		width:100%;
+	}
+	
+	tr,td{
+		 padding: 10px;
+  		 text-align: center;
+  		 font-size: 30px;
+	}
+	.main-bottom {
+		width:100%
+		margin : 10px;
+	}
+	th{
+		background-color: #eeeeee;
+	}
+	.search{
+		 float: right;
+		 margin:10px;
+	}
+	#search_member{
+		height: 30px;
+		width: 250px;
+	}
+	select{
+		height: 30px;
+		width: 80px;
+		text-align:center;
+	}
+	.top{
+		display:flex;
+	}
+	.profile-image{
+		width:auto;
+		height:auto;
+	}
+	.profile-image>img{
+		padding : 20px;
+		height:350px;
+		width:300px;
+		border:3px solid #eeeeee;
+		border-radius:10%;
+		background-color:#eeeeee;
+	}
+	
+	input{
+		margin:5px;
+		width:80%;
+		height:50px;
+		font-size:30px;
+		border-radius: 10px;
+		text-align:center;
+	}
+	
+	hr{
+		height:2px;
+		border-top: 5px dotted #EEEEEE;
+		
+	}
+	

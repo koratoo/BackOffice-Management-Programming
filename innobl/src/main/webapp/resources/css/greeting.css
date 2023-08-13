@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+	.greeting-container {
+          display: flex;
+          flex-direction: row; /* 가로 정렬을 위해 flex-direction을 row로 설정 */
+          align-items: center; /* 수직 정렬 (가로 방향) */
+      }
+      .greeting-container h1, .greeting-container h5 {
+          margin: 0;
+          padding: 10px;
+      }
+      .greeting-container h5 {
+      	margin-left:auto;
+      }
+      #userid{
+      	color:blue;
+      }
+      #userid:hover{
+      	cursor:pointer;
+      }
+      
+      #logout{
+      	color:lightgray;
+      }
+      #logout:hover{
+      	cursor:pointer;
+      	color:gray;
+      }
+      
+      
+      
+		
