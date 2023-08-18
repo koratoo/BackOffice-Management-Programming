@@ -45,11 +45,10 @@ public class ProjectController {
 			 @RequestParam(value = "PRJNAME", defaultValue="", required = false) String PRJNAME,
 			 @RequestParam(value = "from",defaultValue="20230101", required = false) String from,
 			 @RequestParam(value = "to",defaultValue="20230801", required = false) String to,
-             @RequestParam(value = "PRJSTATUS",defaultValue="100", required = false) String PRJSTATUS,
-             @RequestParam(value = "pageNum",defaultValue="1", required = false) int pageNum,
-             @RequestParam(value = "amount",defaultValue="10", required = false) int amount,
-            
-			Criteria cri, Model model) {
+		         @RequestParam(value = "PRJSTATUS",defaultValue="100", required = false) String PRJSTATUS,
+		         @RequestParam(value = "pageNum",defaultValue="1", required = false) int pageNum,
+		         @RequestParam(value = "amount",defaultValue="10", required = false) int amount,
+			 Criteria cri, Model model) {
 		
 		model.addAttribute("from", from);
 		model.addAttribute("to", to);
@@ -64,23 +63,23 @@ public class ProjectController {
 	
 	@PostMapping("/project_list")
 	public String postCurrentMembers( 
-								  @RequestParam(value = "PRJNAME", required = false) String PRJNAME,
-								  @RequestParam(value = "from", required = false) String from,
-								  @RequestParam(value = "to", required = false) String to,
+				      @RequestParam(value = "PRJNAME", required = false) String PRJNAME,
+				      @RequestParam(value = "from", required = false) String from,
+				      @RequestParam(value = "to", required = false) String to,
 	                              @RequestParam(value = "PRJSTATUS", required = false) String PRJSTATUS,
 	                              @RequestParam(value = "pageNum", required = false) int pageNum,
 	                              @RequestParam(value = "amount", required = false) int amount,
 	                              Model model,Criteria cri) {
 		int total = service.getTotalCount(from, to, PRJSTATUS, PRJNAME, pageNum, amount);
-	    model.addAttribute("from", from);
+	        model.addAttribute("from", from);
 		model.addAttribute("to", to);
 		model.addAttribute("PRJSTATUS", PRJSTATUS);
 
-	    List<DCodeDTLVO> decode = dservice.getProjectStatusDcode();
+	        List<DCodeDTLVO> decode = dservice.getProjectStatusDcode();
 
 		model.addAttribute("decode", decode);	
-	    model.addAttribute("list", service.searchWithTypes(from, to, PRJSTATUS, PRJNAME, pageNum, amount));
-	    model.addAttribute("pageMaker", new PageDTO(cri, total));
+	        model.addAttribute("list", service.searchWithTypes(from, to, PRJSTATUS, PRJNAME, pageNum, amount));
+	        model.addAttribute("pageMaker", new PageDTO(cri, total));
 	    
 	    return "project/project_list";
 	}
