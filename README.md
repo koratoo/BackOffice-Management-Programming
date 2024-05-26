@@ -1,5 +1,5 @@
 # 백오피스 관리 프로그램 만들기
->>코드는 master브랜치에 있습니다.
+>코드는 master브랜치에 있습니다.
 
 ![image](https://github.com/koratoo/innbl-junior-project/assets/96603612/50e7328f-a630-4bfc-b517-96bb05d9615a)
 
