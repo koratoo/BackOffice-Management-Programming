@@ -178,7 +178,7 @@
             #{joinDate}, 
             #{exitDate},  
             #{alchol},
-            '1' as delete_col,
+            '0' as delete_col, --WHEN 0 NOT DELETED, 1 DELETED MEMBER
             #{addrdtl}
         )
     </insert>
