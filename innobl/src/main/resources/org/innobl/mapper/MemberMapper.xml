@@ -178,13 +178,13 @@
             #{joinDate}, 
             #{exitDate},  
             #{alchol},
-            '1',
+            '1' as delete_col,
             #{addrdtl}
         )
     </insert>
     
     <select id="getMemberByMno" resultType="org.innobl.domain.VO.MemberVO">
-     	select
+     	SELECT
      		mno, 
             name, 
             juminNo, 
@@ -206,7 +206,7 @@
             joinDate,
             exitDate, 
             alchol
-        from 
+        FROM 
         	member mb
         	 left outer join dcodedtl cd1 on (cd1.dcode='M001' and mb.marriage = cd1.dtlcode)
         	 left outer join dcodedtl cd2 on (cd2.dcode='M002' and mb.payType = cd2.dtlcode)
@@ -214,7 +214,7 @@
         	 left outer join dcodedtl cd4 on (cd4.dcode='M004' and mb.wishPos = cd4.dtlcode)
   			 left outer join dcodedtl cd5 on (cd5.dcode='M005' and mb.skilllevel = cd5.dtlcode)
   			 left outer join dcodedtl cd6 on (cd6.dcode='M006' and mb.gender = cd6.dtlcode)
-  			where mno = #{mno}
+  			WHERE mno = #{mno}
     </select>
     
     <select id="getTotalCount" resultType="int">
