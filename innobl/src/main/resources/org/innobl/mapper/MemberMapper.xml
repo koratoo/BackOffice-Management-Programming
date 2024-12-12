@@ -27,14 +27,13 @@
   			 emplYear,
   			 joinDate,
   			 exitDate
-  			from
-  			 member mb
-  			 left outer join dcodedtl cd5 on (cd5.dcode='M005' and mb.skilllevel = cd5.dtlcode)
-  			 left outer join dcodedtl cd6 on (cd6.dcode='M006' and mb.gender = cd6.dtlcode)
-  			where 
-  				
-  			rownum<=#{pageNum} * #{amount}
-  			and delete_col = 1
+  			FROM member mb
+  			 LEFT OUTER JOIN dcodedtl cd5 
+	 		     ON (cd5.dcode='M005' and mb.skilllevel = cd5.dtlcode)
+  			 LEFT OUTER JOIN dcodedtl cd6 
+	 		     ON (cd6.dcode='M006' and mb.gender = cd6.dtlcode)
+  			WHERE rownum<=#{pageNum} * #{amount}
+  			AND delete_col = 1
   			ORDER BY mno DESC  			
   			)
   			where rn>(#{pageNum} -1) * #{amount}
